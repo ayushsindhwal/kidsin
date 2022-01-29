@@ -1,0 +1,29 @@
+.post .card_icon_menu{
+    display: flex;
+    justify-content: space-around;
+    padding: 0 15px;
+    cursor:pointer;
+
+}
+
+.post .card_icon_menu{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+    cursor: pointer;
+}
+
+.post .card_icon_menu i{
+    font-size:28px;
+    margin:10px;
+
+}
+
+
+
+.post .card_icon_menu img{
+    width: 28px;
+    height: 27px;
+    transform: translateY(5px,-5px);
+    opacity: 0.9;
+}

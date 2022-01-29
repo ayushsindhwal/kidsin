@@ -1,0 +1,44 @@
+import { DeleteData, EditData } from "../actions/globalTypes";
+import { POST_TYPE } from "../actions/post";
+
+const initialState = {
+  loading: false,
+  posts: [],
+  result: 0,
+  page: 2,
+};
+
+const postReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case POST_TYPE.CREATE_POST:
+      return {
+        ...state,
+        posts: [action.payload, ...state.posts],
+      };
+    case POST_TYPE.LOADING_POST:
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    case POST_TYPE.GET_POSTS:
+      return {
+        ...state,
+        posts: action.payload.posts,
+        result: action.payload.results,
+      };
+    case POST_TYPE.UPDATE_POST:
+      return {
+        ...state,
+        posts: EditData(state.posts, action.payload._id, action.payload),
+      };
+    case POST_TYPE.DELETE_POST:
+      return {
+        ...state,
+        posts: DeleteData(state.posts, action.payload._id),
+      };
+    default:
+      return state;
+  }
+};
+
+export default postReducer;
