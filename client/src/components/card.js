@@ -1,9 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
-const UserCard = ({ user, msg }) => {
+import { useParams } from "react-router-dom";
+const UserCard = ({ user, currentUser,msg }) => {
+  const {id}=useParams()
   return (
-    <div className="chat_list active_chat">
-      <div className="chat_people" style={{ display: "flex" }}>
+    <div className="chat_list active_chat" style={{backgroundColor:currentUser===user._id?'#128ced ':''}}>
+      <div className="chat_people" style={{ display: "flex"}}>
         <div className="chat_img">
           {" "}
           <img

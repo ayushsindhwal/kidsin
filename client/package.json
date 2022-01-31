@@ -1,7 +1,7 @@
 {
   "name": "client",
   "version": "0.1.0",
-  "proxy": "http://127.0.0.1:5000",
+  "proxy": "http://127.0.0.1:5001",
   "secure": false,
   "private": true,
   "dependencies": {
@@ -15,9 +15,9 @@
     "chip": "^0.0.5",
     "formik": "^2.2.6",
     "jquery": "^3.6.0",
-    "material-design-icons": "^3.0.1",
     "moment": "^2.29.1",
     "pdfjs-dist": "^2.6.347",
+    "postcss": "^8.4.5",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-chips": "^0.8.0",
@@ -70,6 +70,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/helper-compilation-targets": "^7.16.7",
     "prettier": "^2.3.0"
   }
 }

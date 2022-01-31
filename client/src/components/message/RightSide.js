@@ -17,26 +17,24 @@ const RightSide = () => {
   const [text, setText] = useState("");
   const [Allmessage, setAllmessage] = useState([]);
   useEffect(() => {
-    getAllmessages()
+    getAllmessages();
     const newUser = message.users.find((user) => user._id === id);
     if (newUser) {
       setUser(newUser);
-    
     }
   }, [message.users, id]);
 
-
-  const getAllmessages=async()=>{
-    const hello=await axios.get('/api/getallmessage',{
-      headers: { Authorization:auth.token}
-    })
-    console.log(hello.data)
-    setAllmessage(hello.data)
-    setText(hello.data[0].text)
-  }
+  const getAllmessages = async () => {
+    const hello = await axios.get("/api/getallmessage", {
+      headers: { Authorization: auth.token },
+    });
+    console.log(hello.data);
+    setAllmessage(hello.data);
+    setText(hello.data[0].text);
+  };
 
   const handleSubmit = (e) => {
-    console.log(text)
+    console.log(text);
     e.preventDefault();
     if (!text.trim()) return;
     setText("");
@@ -52,6 +50,10 @@ const RightSide = () => {
   };
 
   useEffect(() => {
+    // scroll to bottom view here
+    const element = document.getElementById("chat_container");
+    let xH = element.scrollHeight;
+    element.scollTop = xH-element.clientHeight;
     if (id) {
       const getMessagesData = async () => {
         dispatch({ type: MESS_TYPES.ADD_MESSAGE, payload: { messages: [] } });
@@ -60,13 +62,14 @@ const RightSide = () => {
       getMessagesData();
     }
   }, [id, dispatch, auth]);
+
   return (
     <>
       <div
         className="chat_container"
         style={{ height: "600px", overflowY: "auto" }}
       >
-        <div className="chat_display">
+        <div className="chat_display" id="chat_container">
           {message.data.map((msg, index) => (
             <div key={index}>
               {msg.sender !== auth.user._id && (
@@ -85,17 +88,23 @@ const RightSide = () => {
         </div>
       </div>
       <form className="chat_input">
-       { auth.user.role=='student'?<select
-          onChange={(e) => setText(e.target.value)}
-          value={text}
-          style={{ width: "100%" }}
-        >
-          {
-            Allmessage.map(message=><option  value={message.text}>{message.text}</option>)
-          }
-        </select>:
-        <input onChange={(e) => setText(e.target.value)} value={text}  style={{ width: "100%" }}/>
-}
+        {auth.user.role == "student" ? (
+          <select
+            onChange={(e) => setText(e.target.value)}
+            value={text}
+            style={{ width: "100%" }}
+          >
+            {Allmessage.map((message) => (
+              <option value={message.text}>{message.text}</option>
+            ))}
+          </select>
+        ) : (
+          <input
+            onChange={(e) => setText(e.target.value)}
+            value={text}
+            style={{ width: "100%" }}
+          />
+        )}
         <button
           onClick={handleSubmit}
           type="submit"
