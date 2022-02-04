@@ -8,6 +8,7 @@ import {
   MESS_TYPES,
 } from "../../redux/actions/message";
 import axios from "axios";
+import ScrollableFeed from "react-scrollable-feed";
 
 const RightSide = () => {
   const { auth, message, socket } = useSelector((state) => state);
@@ -52,8 +53,7 @@ const RightSide = () => {
   useEffect(() => {
     // scroll to bottom view here
     const element = document.getElementById("chat_container");
-    let xH = element.scrollHeight;
-    element.scollTop = xH-element.clientHeight;
+    window.scrollTo(0, element.innerHeight);
     if (id) {
       const getMessagesData = async () => {
         dispatch({ type: MESS_TYPES.ADD_MESSAGE, payload: { messages: [] } });
@@ -69,23 +69,25 @@ const RightSide = () => {
         className="chat_container"
         style={{ height: "600px", overflowY: "auto" }}
       >
-        <div className="chat_display" id="chat_container">
-          {message.data.map((msg, index) => (
-            <div key={index}>
-              {msg.sender !== auth.user._id && (
-                <div className="chat_row other_message">
-                  <MsgDisplay user={user} msg={msg} />
-                </div>
-              )}
+        <ScrollableFeed>
+          <div className="chat_display" id="chat_container">
+            {message.data.map((msg, index) => (
+              <div key={index}>
+                {msg.sender !== auth.user._id && (
+                  <div className="chat_row other_message">
+                    <MsgDisplay user={user} msg={msg} />
+                  </div>
+                )}
 
-              {msg.sender === auth.user._id && (
-                <div className="chat_row your_message">
-                  <MsgDisplay user={auth.user} msg={msg} />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+                {msg.sender === auth.user._id && (
+                  <div className="chat_row your_message">
+                    <MsgDisplay user={auth.user} msg={msg} />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </ScrollableFeed>
       </div>
       <form className="chat_input">
         {auth.user.role == "student" ? (
