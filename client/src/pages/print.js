@@ -11,7 +11,7 @@ const Print = () => {
     const [Data, setData] = useState([]);
     const getReciept=async()=>{
         const res=await getDataAPI('/getreciept',auth.token)
-        console.log(res.data)
+        
         setData(res.data)
     }
 useEffect(() => {

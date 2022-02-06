@@ -27,34 +27,34 @@ const Userlist = () => {
   const [ext, setext] = useState('');
 
   useEffect(() => {
-    console.log(userlist)
+    
     setisOpen(userlist.show);
     setuserData(userlist.userdata);
-    console.log(userlist.userdata)
+    
     setext(getFileExtension(userlist.userdata))
 
     return () => {
-      console.log("cleanup");
+      
     };
   }, [userlist]);
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   function getFileExtension(filename){
-    console.log(filename==='[]')
+    
     // get file extension
     if(filename===undefined||typeof(filename)==='object')
     {
       return null
     }
     else{
-      console.log('here')
+      
       const b= filename.split('.').pop();
-      console.log(b)
+      
       return b
   
     }
    
 }
-console.log(ext)
+
   return (
     <Modal
       isOpen={isOpen}

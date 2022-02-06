@@ -24,14 +24,14 @@ class APIfeatures{
 }
 const postController={
 createPost:async(req,res)=>{
-    console.log(req.body)
+    
     try {
         const {content,images}=req.body
 
         const newPost=await Posts.create({
                 content,images,user:req.user._id
         })
-        console.log(newPost)
+        
 
         res.json({
             msg:'Create Post',
@@ -70,7 +70,7 @@ getPost:async(req,res)=>{
         })
         
     } catch (err) {
-        console.log(err)
+        
         return res.status(500).json(
             {msg:err.msg}
         )

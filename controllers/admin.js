@@ -59,14 +59,14 @@ const admin={
     },
     
     showUser:async(req,res)=>{
-        console.log(req.params.id)
+        
         const user=await User.findById(req.params.id)
         var obj = idfun(user)
     res.status(200).json(obj);
     },
 
     editUser:async(req,res)=>{
-        console.log(req.params.id)
+        
         const user=await User.findByIdAndUpdate(req.params.id,{
             ...req.body
         })
@@ -76,7 +76,7 @@ const admin={
 
     },
     deleteUser:async(req,res)=>{
-        console.log(req.params.id)
+        
         const post=await Posts.remove({user:req.params.id})
         const comments=await Comments.remove({user:req.params.id})
         const messages=await Message.remove({$or:[{recipient:req.params.id},{sender:req.params.id}]})
@@ -134,14 +134,14 @@ showPosts:async(req,res)=>{
 
 //show posts
 showPost:async(req,res)=>{
-    console.log(req.params.id)
+    
     const posts=await Posts.findById(req.params.id)
     var obj = idfun(posts)
 res.status(200).json(obj);
 },
 //edit post 
 editPost:async(req,res)=>{
-    console.log(req.params.id,"this is the post id")
+    
 
 },
 deletePost:async(req,res)=>{
@@ -154,7 +154,7 @@ deletePost:async(req,res)=>{
 //getting Interest
 showInterests:async(req,res)=>{
 const interest=await Interest.find()
-console.log(interest)
+
 const allinterest=[] 
 const newUser=interest.map(use=>{
     var obj = use.toObject();
@@ -173,9 +173,9 @@ res.status(200).json(allinterest)
 },
 //single Interest
 showInterest:async(req,res)=>{
-    console.log("hello",req.params.id)
+    
     const interest=await Interest.findById(req.params.id)
-    console.log(interest,"this is the interest")
+    
     var obj = idfun(interest)
     res.status(200).json(obj);
 },
@@ -212,15 +212,15 @@ res.status(200).json(allskills)
 userInRadius:async(req,res)=>{
     const {location,distance}=req.params
     const isUserPaid=await purchased.find({user:req.user._id})
-    console.log(isUserPaid,"not paid at all")
+    
     if(isUserPaid.length===0)return res.json({msg:"please Buy a plan to post add"})
-    console.log(location)
+    
     //get lat/long from geocoder
     const loc=await geocoder.geocode(location)
     const lat=loc[0].latitude
     const lng=loc[0].longitude
 
-    console.log(lat,lng)
+    
        // Calc radius using radians
       // Divide dist by radius of Earth
      // Earth Radius = 3,963 mi / 6,378 km
@@ -232,7 +232,7 @@ location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
 if (req.files === null) {
     return res.status(400).json({ msg: 'No file uploaded' });
   }
-  console.log(req.files)
+  
 let filePath=[]
 const files=req.files
 const milliseconds=new Date()
@@ -242,7 +242,7 @@ for(var file in files)
   const imagePath='/uploads/'+milliseconds.getTime()+files[file].name
   files[file].mv('./public'+imagePath, err => {
     if (err) {
-      console.log("here")
+      
       console.error(err);
       return res.status(500).send(err);
     }
@@ -253,7 +253,7 @@ for(var file in files)
 const ads=[]
 for(let i of user)
 {
-console.log(i._id)
+
 ads.push(i._id)
 }
 
@@ -327,17 +327,17 @@ res.json(skills)
 },
 getSkill:async(req,res)=>
 {
-    console.log("here we are")
+    
 const skills=await AdminSkills.findById(req.params.id)
-console.log(skills)
+
 res.json(skills)
 
 },
 addSkill:async(req,res)=>
 {
-    console.log(req.body)
+    
 const skills=await AdminSkills.create({name:req.body.skill})
-console.log(skills)
+
 res.json(skills)
 },
 deleteSkill:async(req,res)=>
@@ -346,19 +346,19 @@ const skills=await AdminSkills.findByIdAndDelete(req.params.id)
 res.json(skills)
 },
 editSkills:async(req,res)=>{
-    console.log(req.body)
+    
     const skills=await AdminSkills.findByIdAndUpdate(req.params.id,{...req.body})
     res.status(200).json({msg:"skill updated"})
 },
 purchaseList:async(req,res)=>{
-    console.log("hello  purchases")
+    
     const purchases=await purchased.find().populate('plan purchasedBy')
     res.json(purchases)
 
 },
 
 deletePlans:async(req,res)=>{
-    console.log(req.params.id)
+    
     const deleteplan=await Plans.findByIdAndDelete(req.params.id)
     const plans=await Plans.find()
     res.json({data:plans})
@@ -373,31 +373,31 @@ getAll:async(req,res)=>{
     const profile=await Profile.find()
     const purchasedBy=await Plans.find()
  
-console.log("hello")
+
 
 res.json({data:{student,school,skills,schooladd,profile,purchasedBy}})
 
 },
 postAllmessages:async(req,res)=>{
-    console.log("hekki",req.body)
+    
     const allmessages=await Allmessages.create({
         ...req.body
     })
-    console.log("added messages")
+    
 
 },
 getAllMessage:async(req,res)=>{
-    console.log(req.body)
+    
     const allmessages=await Allmessages.find()
     res.json(allmessages)
 },
 deleteMessages:async(req,res)=>{
     const allmessages=await Allmessages.findByIdAndDelete(req.params.id)
-    console.log(allmessages)
+    
 },
 editmessage:async(req,res)=>{
     const a=await Allmessages.findByIdAndUpdate(req.params.id,{...req.body})
-    console.log("updatesdsds")
+    
 
     res.json({msg:"updated successfully"})
 
@@ -405,16 +405,16 @@ editmessage:async(req,res)=>{
 },
 getmessage:async(req,res)=>{
     const a=await Allmessages.findById(req.params.id)
-    console.log(a)
+    
     res.json(a)
 },
 verificationList:async(req,res)=>{
     const a=await verification.find().populate('profile')
-    console.log(a)
+    
     res.json(a)
 },
 verifyuser:async(req,res)=>{
-    console.log("here")
+    
     const a=await verification.findById(req.params.id)
     const b=await User.findByIdAndUpdate(a.profile._id,{
         verified:true
@@ -422,7 +422,7 @@ verifyuser:async(req,res)=>{
     const c=await verification.findByIdAndDelete(req.params.id)
     const d=await verification.find().populate('profile')
 
-    console.log("deleted and verified")
+    
 
     res.json(d)
 }

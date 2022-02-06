@@ -37,7 +37,7 @@ const Info = () => {
 
 
     onSubmit: (values) => {
-      console.log(values)
+      
       dispatch(userProfileUpdate({ values, auth }));
       handleClose();
     },

@@ -1,5 +1,6 @@
 import { PROFILE_TYPES } from "../actions/profile.js";
-import { EditData } from "../actions/globalTypes";
+import { DeleteData, EditData } from "../actions/globalTypes";
+import { POST_TYPE } from "../actions/post.js";
 const initialState = {
   loading: false,
   users: [],
@@ -38,7 +39,30 @@ const profileReducer = (state = initialState, action) => {
         ...state,
         details: action.payload,
       };
-
+    case POST_TYPE.UPDATE_PROFILE_POST:
+      return {
+        ...state,
+        details: {
+          ...state?.details,
+          post: EditData(
+            state?.details?.post,
+            action.payload._id,
+            action.payload
+          ),
+        },
+      };
+    case POST_TYPE.DELETE_PROFILE_POST:
+      return {
+        ...state,
+        details: {
+          ...state?.details,
+          post: EditData(
+            state?.details?.post,
+            action.payload._id,
+            action.payload
+          ),
+        },
+      };
     default:
       return state;
   }

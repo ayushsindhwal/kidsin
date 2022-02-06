@@ -29,13 +29,13 @@ const RightSide = () => {
     const hello = await axios.get("/api/getallmessage", {
       headers: { Authorization: auth.token },
     });
-    console.log(hello.data);
+    
     setAllmessage(hello.data);
     setText(hello.data[0].text);
   };
 
   const handleSubmit = (e) => {
-    console.log(text);
+    
     e.preventDefault();
     if (!text.trim()) return;
     setText("");

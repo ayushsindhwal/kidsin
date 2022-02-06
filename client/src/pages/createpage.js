@@ -62,7 +62,7 @@ const Courses = () => {
     onSubmit: (values, onSubmitProps) => {
 
       let coursefile = file==undefined||file.length === 0 ? present : file;
-      console.log(coursefile)
+      
       let page = {...values,image:coursefile==undefined?values.image:coursefile};
         if(page._id==undefined)
         {
@@ -108,7 +108,7 @@ const Courses = () => {
     e.preventDefault();
 
     let option = window.confirm("Are you sure?");
-    console.log(id)
+    
     let pageid = id;
 
     if (option) {

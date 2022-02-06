@@ -49,7 +49,7 @@ export const userProfileUpdate =
   ({ avatar, values, auth }) =>
   async (dispatch) => {
     try {
-      console.log(values)
+      
       let media;
       dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
       if (avatar) {
@@ -194,7 +194,7 @@ export const updateUserMain =
         });
       } else if (skills) {
         const res = await postDataAPI("update-skills", skills, auth.token);
-        console.log(res.data.data);
+        
         const detail = { ...auth.details, skill: res.data.data };
 
         dispatch({
@@ -455,7 +455,7 @@ export const Connections =
           case "DeleteFriend":
             {
               const res=await deleteDataAPI("deleteFriend",auth.token,conid)
-              console.log(res.data.data)
+              
               dispatch({type:GLOBALTYPES.AUTH,payload:{
                 ...auth,
                 user:res.data.data
@@ -517,7 +517,7 @@ else{
         let media = await imageUpload([eventfile],auth);
         let evented = { ...event, file: media[0].url };
         const res = await postDataAPI("add-event", evented, auth.token);
-        console.log(res.data.data)
+        
         dispatch({
           type: GLOBALTYPES.AUTH,
           payload: {
@@ -695,7 +695,7 @@ export const addInterest =
           { interestId },
           auth.token
         );
-          console.log(res.data)
+          
         const user={...auth.user,interest:res.data.data}
 
         dispatch({
@@ -724,10 +724,10 @@ export const addInterest =
     }
   };
 export const deleteInterest=({interestId,auth})=>async(dispatch)=>{
-  console.log(interestId,auth)
+  
   try {
       const res=await patchDataAPI('deleteinterest',{ interestId },auth.token)
-      console.log(res)
+      
       const user={...auth.user,interest:res.data.interest}
       dispatch({
         type: GLOBALTYPES.AUTH,
@@ -831,7 +831,7 @@ export const endrosedSkill =
 export const resetLoginPassword =({ password, oldpassword, auth }) =>async (dispatch) => {
     try {
       const res=await postDataAPI('changePassword',{password,oldpassword},auth.token)
-      console.log(res)
+      
       dispatch({ type: GLOBALTYPES.ALERT, payload: { success: res.data.msg } });
 
     } catch (err) {}
@@ -839,12 +839,12 @@ export const resetLoginPassword =({ password, oldpassword, auth }) =>async (disp
 
 
   export const createAds=({formData,value,radius,auth})=>async(dispatch)=>{
-    console.log("ewjrlksfslkflsdflkds")
+    
     const res=await axios.post(`/admin/ads/${value.label}/${radius}`,formData, {
       headers: { Authorization: auth.token },
     })
 
-    console.log(res)
+    
     dispatch({ type: GLOBALTYPES.ALERT, payload: { success: res.data.msg } });
 
 }
@@ -853,12 +853,12 @@ export const resetLoginPassword =({ password, oldpassword, auth }) =>async (disp
 export const createPage=({page,auth})=>async(dispatch)=>{
   try{
     let media;
-    console.log(page.image)
+    
     media = await imageUpload([page.image],auth);
-    console.log(media)
+    
     let pagesend = { ...page, image: media[0].url };
     const res=await postDataAPI('/createpage',pagesend,auth.token)
-    console.log(res)
+    
     const pages=auth.details.pages
     pages.push(res.data)
     const details={...auth.details,pages:pages}
@@ -868,16 +868,16 @@ export const createPage=({page,auth})=>async(dispatch)=>{
   }
   catch(err)
   {
-    console.log(err)
+    
   }
   
 
 }
 export const editPage=({page,auth})=>async(dispatch)=>{
-  console.log(typeof(page.image))
+  
   try{
     let media;
-    console.log(page.image)
+    
     if((typeof(page.image)!=='string') &&( page.image!=undefined))
     {
       let hello = await imageUpload([page.image],auth);
@@ -886,34 +886,34 @@ export const editPage=({page,auth})=>async(dispatch)=>{
     else{
       media=page.image
     }
-    console.log(media)
+    
     let pagesend = { ...page, image:media};
     const res=await putDataAPI('/editpage',pagesend,auth.token)
-    console.log(res)
+    
     const pages=auth.details.pages.filter(page=>page._id!==res.data._id)
     pages.push(res.data)
     const details={...auth.details,pages:res.data}
-    console.log(details)
+    
     dispatch({type:GLOBALTYPES.AUTH,payload:{...auth,details:details}})
     dispatch({type:GLOBALTYPES.ALERT,payload:"page updated"})
 
   }
   catch(err)
   {
-    console.log(err)
+    
   }
 
 }
 export const deletePage=({pageid,auth})=>async(dispatch)=>{
-  console.log(pageid)
+  
     const res=await deleteDataAPI(`/page/${pageid}`,auth.token)
-    console.log(res)
+    
     const pages=auth.details.pages.filter(page=>page._id!==res.data.id)
     const details={...auth.details,pages:pages}
     dispatch({type:GLOBALTYPES.AUTH,payload:{...auth,details:details}})
     dispatch({type:GLOBALTYPES.ALERT,payload:"page deleted"})
 
-    console.log(res)
+    
 
 }
 

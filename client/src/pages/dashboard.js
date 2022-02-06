@@ -103,7 +103,7 @@ const Profile = () => {
 
   const handleEducation = (state, data) => {
     educationForm.resetForm();
-    console.log(data)
+    
     setFile();
     setEducation(state);
     setEdu([]);

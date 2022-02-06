@@ -14,26 +14,21 @@ const Skills = ({ data, st }) => {
         <ul className="skill-list">
           {(data.skill &&
             data.skill.map((skill, i) => (
-              <>
-                {}
-
-                <li style={{ listStyle: "none" }} key={i}>
-                  <i
-                    onClick={() =>
-                      dispatch(endrosedSkill({ skillId: skill._id, auth }))
-                    }
-                    className={
-                      skill.endrosedBy.filter(
-                        (end) => end._id === auth.user._id
-                      ).length !== 0
-                        ? "fa fa-minus"
-                        : "fa fa-plus"
-                    }
-                    aria-hidden="true"
-                  ></i>{" "}
-                  {skill.skill}
-                </li>
-              </>
+              <li style={{ listStyle: "none" }} key={i}>
+                <i
+                  onClick={() =>
+                    dispatch(endrosedSkill({ skillId: skill._id, auth }))
+                  }
+                  className={
+                    skill.endrosedBy.filter((end) => end._id === auth.user._id)
+                      .length !== 0
+                      ? "fa fa-minus"
+                      : "fa fa-plus"
+                  }
+                  aria-hidden="true"
+                ></i>{" "}
+                {skill.skill}
+              </li>
             ))) ||
             null}
         </ul>

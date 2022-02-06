@@ -26,12 +26,10 @@ const Student = () => {
   useEffect(() => {
     dispatch(getProfileUsers({ users: profile.users, id, auth }));
     const newData = profile.users.filter((user) => user._id === id);
-    console.log(newData)
     setUserData(newData);
     setFulldata(profile.details);
 
     return () => {
-      console.log("cleanup");
     };
   }, [dispatch, profile.details, auth, id, profile.users, profile.details]);
 
@@ -44,7 +42,7 @@ const Student = () => {
       <div className="d-flex" id="wrapper">
         {userData !== undefined
           ? userData.map((user) => (
-              <div className="bg-light border-right" id="sidebar-wrapper">
+              <div key={user._id} className="bg-light border-right" id="sidebar-wrapper">
                 <div className="sidebar-heading">
                 <div className="logo">
           <img
@@ -96,13 +94,11 @@ const Student = () => {
                   ) : auth.user._id === user._id ? null : (
                     <>
                     <button className="followBtn">
-                      {console.log(fulldata.statusBetween)}
                         {fulldata.statusBetween}
                     </button>
                     {fulldata.statusBetween=='Connected'?
                     <Link className="followBtn Dark" to={`/message/${id}`}>
-                         {console.log(fulldata.statusBetween)}
-                          Chat
+x                          Chat
                        </Link>:null
                   }
                        </>

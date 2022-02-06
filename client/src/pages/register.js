@@ -64,7 +64,7 @@ const Register = () => {
     validate,
     onSubmit: (values) => {
       const data={...values,address:value.label}
-      console.log(data)
+      
       dispatch(register(data));
       history.push('/confirmemail')
     },

@@ -37,7 +37,7 @@ const Interest = () => {
     }
     setUserInterest(data.value);
   };
-console.log(UserInterest)
+
   return (
     <div className="row">
       <div className="col-lg-8">

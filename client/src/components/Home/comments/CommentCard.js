@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Avatar from "../../Avatar";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import moment from "moment";
 import LikeButton from "../../likebutton";
 import { useSelector, useDispatch } from "react-redux";
@@ -23,6 +23,9 @@ const CommentCard = ({ children, comment, post, commentId }) => {
   const [loadLike, setLoadLike] = useState(false);
   const [onReply, setOnReply] = useState(false);
 
+  const { pathname } = useLocation();
+ 
+  const page = pathname?.split("/")[1];
   useEffect(() => {
     setContent(comment.content);
     setIsLike(false);
@@ -36,12 +39,11 @@ const CommentCard = ({ children, comment, post, commentId }) => {
     opacity: comment._id ? 1 : 0.5,
     PointerEvent: comment._id ? "inherit" : "none",
   };
-
   const handleLike = async () => {
     if (loadLike) return;
     setIsLike(true);
     setLoadLike(true);
-    await dispatch(likeComment({ comment, post, auth }));
+    dispatch(likeComment({ comment, post, auth, page }));
     setLoadLike(false);
   };
 
@@ -49,7 +51,7 @@ const CommentCard = ({ children, comment, post, commentId }) => {
     if (loadLike) return;
     setIsLike(false);
     setLoadLike(true);
-    await dispatch(unLikeComment({ comment, post, auth }));
+    dispatch(unLikeComment({ comment, post, auth, page }));
     setLoadLike(false);
   };
 

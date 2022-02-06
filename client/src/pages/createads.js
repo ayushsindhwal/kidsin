@@ -16,7 +16,7 @@ const  CreateAds = () => {
   const [tracks, setTracks] = useState("");
   const [value, setValue] = useState(null);
   const [files,setFiles]=useState()
-  console.log(value)
+  
 
   const dispatch = useDispatch()
   const history=useHistory()
@@ -58,11 +58,11 @@ const  CreateAds = () => {
           const track = mediaStream.getTracks();
           setTracks(track[0]);
         })
-        .catch((err) => console.log(err));
+        .catch((err) =>console.log(err))
     }
   };
 
-  console.log(images)
+  
 
   const handleCapture = () => {
     const width = videoRef.current.clientWidth;
@@ -87,19 +87,19 @@ const  CreateAds = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if(images.length===0)
-    return console.log("Please add an image")
+    return 
     else{
         const formData=new FormData()
-        console.log(files)
+        
         var j=0
         for(let i of images)
         {
             formData.append('file'+j,i)
-            console.log(i)
+            
             j++
         }
         formData.append('content',content)
-        console.log("this is formdata",formData)
+        
         dispatch(createAds({formData,value,radius,auth}))
 
     }
@@ -110,7 +110,7 @@ const  CreateAds = () => {
 
   };
 
-  console.log("here")
+  
   
   let Text;
 if(auth.details!==undefined&&auth.details.isUserPaid.length===0)

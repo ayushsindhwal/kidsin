@@ -19,7 +19,7 @@ const Post = ({ posted, st }) => {
     setIsLike(true);
     setLoadLike(true);
 
-    await dispatch(likePost({ post, auth }));
+     dispatch(likePost({ post, auth }));
     setLoadLike(false);
   };
   const handleUnLike = () => {

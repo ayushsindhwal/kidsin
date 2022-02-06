@@ -31,7 +31,7 @@ const {auth} = useSelector(state => state)
 const [Plans, setPlans] = useState([]);
 const getPlans=async()=>{
 const res=await axios.get('/api/plans')
-console.log(res.data.data)
+
 setPlans(res.data.data)
 }
 useEffect(() => {
@@ -56,7 +56,7 @@ async function displayRazorpay(e,planid)
     const {data}=await axios.post(`/api/razorpay/${planid}`,{"hello":"world"},{
         headers: { Authorization: auth.token },
       })
-    console.log(data)
+    
     var options = {
         "key": "rzp_test_wMYjuHKt9WDnpF", // Enter the Key ID generated from the Dashboard
         "currency":data.currency,

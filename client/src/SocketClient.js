@@ -65,7 +65,7 @@ const SocketClient = () => {
 
   useEffect(() => {
     socket.on("createNotifyToClient", (msg) => {
-      console.log(msg)
+      
       dispatch({ type: NOTIFY_TYPES.CREATE_NOTIFY, payload: msg });
     });
     return () => socket.off("createNotifyToClient");

@@ -50,7 +50,7 @@ const CardHeader = ({ post }) => {
         </Link>
 
    
-        <h5 class="mt-0">{post.user.schoolname}</h5>
+        <h5 className="mt-0">{post.user.schoolname}</h5>
 
         <p className="pstTime">
           <i className="fa fa-clock-o" aria-hidden="true"></i>

@@ -8,9 +8,13 @@ import { createNotify } from "./notify";
 import { POST_TYPE } from "./post";
 
 export const createComment =
-  (post, newComment, auth, socket) => async (dispatch) => {
+  (post, newComment, auth, socket, page) => async (dispatch) => {
     const newPost = { ...post, comments: [...post.comments, newComment] };
-    dispatch({ type: POST_TYPE.UPDATE_POST, payload: newPost });
+    if (page == "profile") {
+      dispatch({ type: POST_TYPE.UPDATE_PROFILE_POST, payload: newPost });
+    } else {
+      dispatch({ type: POST_TYPE.UPDATE_POST, payload: newPost });
+    }
     //Socket
     try {
       const data = {
@@ -45,14 +49,18 @@ export const createComment =
   };
 
 export const updateComment =
-  ({ comment, post, content, auth }) =>
+  ({ comment, post, content, auth, page }) =>
   async (dispatch) => {
     const newComments = EditData(post.comments, comment._id, {
       ...comment,
       content,
     });
     const newPost = { ...post, comments: newComments };
-    dispatch({ type: POST_TYPE.UPDATE_POST, payload: newPost });
+    if (page == "profile") {
+      dispatch({ type: POST_TYPE.UPDATE_PROFILE_POST, payload: newPost });
+    } else {
+      dispatch({ type: POST_TYPE.UPDATE_POST, payload: newPost });
+    }
     try {
       await patchDataAPI(`comment/${comment._id}`, { content }, auth.token);
     } catch (err) {
@@ -64,15 +72,18 @@ export const updateComment =
   };
 
 export const likeComment =
-  ({ comment, post, auth }) =>
+  ({ comment, post, auth, page }) =>
   async (dispatch) => {
     const newComment = { ...comment, likes: [...comment.likes, auth.user] };
 
     const newComments = EditData(post.comments, comment._id, newComment);
 
     const newPost = { ...post, comments: newComments };
-    dispatch({ type: POST_TYPE.UPDATE_POST, payload: newPost });
-
+    if (page == "profile") {
+      dispatch({ type: POST_TYPE.UPDATE_PROFILE_POST, payload: newPost });
+    } else {
+      dispatch({ type: POST_TYPE.UPDATE_POST, payload: newPost });
+    }
     try {
       await patchDataAPI(`comment/${comment._id}/like`, null, auth.token);
     } catch (err) {
@@ -84,7 +95,7 @@ export const likeComment =
   };
 
 export const unLikeComment =
-  ({ comment, post, auth }) =>
+  ({ comment, post, auth, page }) =>
   async (dispatch) => {
     const newComment = {
       ...comment,
@@ -94,8 +105,11 @@ export const unLikeComment =
     const newComments = EditData(post.comments, comment._id, newComment);
 
     const newPost = { ...post, comments: newComments };
-    dispatch({ type: POST_TYPE.UPDATE_POST, payload: newPost });
-
+    if (page == "profile") {
+      dispatch({ type: POST_TYPE.UPDATE_PROFILE_POST, payload: newPost });
+    } else {
+      dispatch({ type: POST_TYPE.UPDATE_POST, payload: newPost });
+    }
     try {
       await patchDataAPI(`comment/${comment._id}/unlike`, null, auth.token);
     } catch (err) {
@@ -107,7 +121,7 @@ export const unLikeComment =
   };
 
 export const deleteComment =
-  ({ post, comment, auth, socket }) =>
+  ({ post, comment, auth, socket,page  }) =>
   async (dispatch) => {
     const deleteArr = [
       ...post.comments.filter((cm) => cm.reply === comment._id),
@@ -120,7 +134,11 @@ export const deleteComment =
         (cm) => !deleteArr.find((da) => cm._id === da._id)
       ),
     };
-    dispatch({ type: POST_TYPE.UPDATE_POST, payload: newPost });
+    if (page == "profile") {
+      dispatch({ type: POST_TYPE.UPDATE_PROFILE_POST, payload: newPost });
+    } else {
+      dispatch({ type: POST_TYPE.UPDATE_POST, payload: newPost });
+    }
     socket.emit("deleteComment", newPost);
 
     try {

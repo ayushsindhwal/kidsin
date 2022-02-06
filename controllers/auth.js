@@ -13,9 +13,9 @@ register:async(req,res)=>{
     try{
         //you can add role here for school
         const {fullname,role,email,password,address}=req.body
-        console.log("here we")
+        
         // let newUserName=username.toLowerCase().replace(/ /g,'')
-        //if in future you need to have user name you can have this // console.log(newUserName)
+        //if in future you need to have user name you can have this // 
         
         // //remove this username in your own project
         // const user_name=await User.findOne({username:newUserName})
@@ -269,9 +269,9 @@ register:async(req,res)=>{
     
           transporter.sendMail(mailOptions, function(error, info){
             if (error) {
-              console.log(error);
+              
             } else {
-              console.log('Email sent: ' + info.response);
+              
             }
           });
           res.status(200).json({msg:"Check your email for confirmation link"})
@@ -413,7 +413,7 @@ logout:async(req,res)=>{
 //GENERATING ACCESS TOKEN
 generateAccessToken:async(req,res)=>{
     try{
-        console.log("helloer sad")
+        
                 const rf_token=req.cookies.refreshtoken
                 if(!rf_token) return res.status(400).json({msg:"please Login"})
 
@@ -437,7 +437,7 @@ generateAccessToken:async(req,res)=>{
 },
 resetToken:async(req,res)=>{
     const {values}=req.body
-    console.log(req)
+    
     const user=await User.find({email:values.email})
     if(user.length===0) return res.status(400).json({msg:"User does not exists"})
     const token= jwt.sign(values,process.env.EMAIL_TOKEN,{expiresIn:'1d'})
@@ -461,9 +461,9 @@ resetToken:async(req,res)=>{
 
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
-          console.log(error);
+          
         } else {
-          console.log('Email sent: ' + info.response);
+          
         }
       });
       res.status(200).json({msg:"Check your email"})
@@ -485,7 +485,7 @@ try {
 }
 },
 confirmEmail:async(req,res)=>{
-    console.log(req.params.id)
+    
 
     try {
 
@@ -497,14 +497,14 @@ confirmEmail:async(req,res)=>{
         })
         return res.status(200).json({msg:'email confirmed'})
     } catch (err) {
-        console.log(err)
+        
         res.status(400).json({msg:"please try again"})
     }
     },
     emailToken:async(req,res)=>{
     try{
         const {values}=req.body
-        console.log(req.body)
+        
         const emailtoken= jwt.sign(values,process.env.EMAIL_TOKEN,{expiresIn:'1d'})
         const setToken=await User.findOneAndUpdate({email:values.email},{emailtoken},{new:true})
         var transporter = nodemailer.createTransport({
@@ -526,16 +526,16 @@ confirmEmail:async(req,res)=>{
     
           transporter.sendMail(mailOptions, function(error, info){
             if (error) {
-              console.log(error);
+              
             } else {
-              console.log('Email sent: ' + info.response);
+              
             }
           });
           res.status(200).json({msg:"Check your email"})
           
     }
     catch (err) {
-        console.log(err)
+        
         res.status(400).json({msg:"please try again"})
     }
 

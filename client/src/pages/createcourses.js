@@ -111,7 +111,7 @@ const Courses = () => {
     }
   };
 
-  console.log(courses)
+  
 
   return (
     <>

@@ -6,7 +6,7 @@ const initialState={
 const pageReducer = (state = initialState, action) => {
   switch (action.type) {
     case GLOBALTYPES.PAGEID:
-      console.log(action.payload)
+      
       return {...state,a:action.payload};
 
     default:

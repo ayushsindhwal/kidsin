@@ -36,6 +36,7 @@ const postReducer = (state = initialState, action) => {
         ...state,
         posts: DeleteData(state.posts, action.payload._id),
       };
+
     default:
       return state;
   }

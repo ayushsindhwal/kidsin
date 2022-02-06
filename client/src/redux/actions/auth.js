@@ -58,7 +58,7 @@ export const refreshToken = () => async (dispatch) => {
 
 export const register = (data) => async (dispatch) => {
   try {
-    console.log(data)
+    
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
     const res = await postDataAPI("register", data);
 
@@ -114,7 +114,7 @@ export const resetPasswordLink =
   async (dispatch) => {
     try {
       const res = await postDataAPI("reset_token", { values });
-      console.log(res.data.msg);
+      
       dispatch({ type: GLOBALTYPES.ALERT, payload: { success: res.data.msg } });
     } catch (err) {
       dispatch({
@@ -131,7 +131,7 @@ export const resetPasswordLink =
   async (dispatch) => {
     try {
       const res = await postDataAPI("/resendemail", { values });
-      console.log(res.data.msg);
+      
       dispatch({ type: GLOBALTYPES.ALERT, payload: { success: res.data.msg } });
     } catch (err) {
       dispatch({
@@ -146,7 +146,7 @@ export const resetPassword =
   async (dispatch) => {
     try {
       const res = await postDataAPI("resetPassword", { password, token });
-      console.log(res);
+      
       dispatch({ type: GLOBALTYPES.ALERT, payload: { success: res.data.msg } });
 
     } catch (err) {
