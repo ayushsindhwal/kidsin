@@ -28,8 +28,8 @@ const Resetpassword = ({ match }) => {
     },
     validate,
     onSubmit: (values) => {
-      console.log(values);
-      console.log(match.params.id);
+      
+      
       dispatch(
         resetPassword({ password: values.password, token: match.params.id })
       );

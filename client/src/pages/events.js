@@ -93,7 +93,7 @@ const Events = () => {
 
   const fileHandler = (e) => {
     const file = e.currentTarget.files[0];
-    console.log(file)
+    
     setFile(file);
   };
 

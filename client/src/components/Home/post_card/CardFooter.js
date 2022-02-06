@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { likePost, unlikePost } from "../../../redux/actions/post";
 import LikeButton from "../../likebutton";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,13 +11,17 @@ const CardFooter = ({ post, showCommentbox, setShowCommentbox }) => {
   const [isLike, setIsLike] = useState(false);
   const [loadLike, setLoadLike] = useState(false);
   const [isShare, setIsShare] = useState(false);
-
+  const {pathname} = useLocation();
+  const page=pathname?.split("/")[1];
   const handleLike = () => {
     if (loadLike) return;
     setIsLike(true);
     setLoadLike(true);
-
-    dispatch(likePost({ post, auth, socket }));
+    if (pathname.split("/")[1] == "profile") {
+      dispatch(likePost({ post, auth, socket, page }));
+    } else {
+      dispatch(likePost({ post, auth, socket }));
+    }
     setLoadLike(false);
   };
 
@@ -25,13 +29,16 @@ const CardFooter = ({ post, showCommentbox, setShowCommentbox }) => {
     if (loadLike) return;
     setIsLike(false);
     setLoadLike(true);
-
-    dispatch(unlikePost({ post, auth, socket }));
+    if (pathname.split("/")[1] == "profile") {
+      dispatch(unlikePost({ post, auth, socket, page }));
+    } else {
+      dispatch(unlikePost({ post, auth, socket }));
+    }
     setLoadLike(false);
   };
 
   useEffect(() => {
-    if (post.likes.find((like) => like._id === auth.user._id)) {
+    if (post.likes.find((like) => like === auth.user._id)) {
       setIsLike(true);
     }
   }, [post.likes, auth.user._id]);
@@ -45,22 +52,24 @@ const CardFooter = ({ post, showCommentbox, setShowCommentbox }) => {
             handleLike={handleLike}
             handleUnLike={handleUnLike}
           />
-{post.stopcomment===false?
-<>
-          <button
-            type="button"
-            onClick={() => setShowCommentbox(!showCommentbox)}
-            className="btn btn-primary postBtn2 mt-0 commentbtn"
-            data-toggle="modal"
-            data-target="#exampleModal5"
-          >
-             Comment
-          </button>
-          <i             onClick={() => setShowCommentbox(!showCommentbox)}
- className="fas fa-comments commenticon" style={{display:'none'}}></i>
-
-          </>:null
-}
+          {post.stopcomment === false ? (
+            <>
+              <button
+                type="button"
+                onClick={() => setShowCommentbox(!showCommentbox)}
+                className="btn btn-primary postBtn2 mt-0 commentbtn"
+                data-toggle="modal"
+                data-target="#exampleModal5"
+              >
+                Comment
+              </button>
+              <i
+                onClick={() => setShowCommentbox(!showCommentbox)}
+                className="fas fa-comments commenticon"
+                style={{ display: "none" }}
+              ></i>
+            </>
+          ) : null}
           <button
             type="button"
             onClick={() => setIsShare(!isShare)}
@@ -70,18 +79,23 @@ const CardFooter = ({ post, showCommentbox, setShowCommentbox }) => {
           >
             Share
           </button>
-          <i className="fa fa-share commenticon"   style={{display:'none'}}           onClick={() => setIsShare(!isShare)}
- aria-hidden="true"></i>
+          <i
+            className="fa fa-share commenticon"
+            style={{ display: "none" }}
+            onClick={() => setIsShare(!isShare)}
+            aria-hidden="true"
+          ></i>
         </div>
         <div className="d-flex justify-content-between ">
           <h6 style={{ padding: "0 30px", cursor: "pointer" }}>
             {post.likes.length} Likes
           </h6>
 
-         {post.stopcomment===false? <h6 style={{ padding: "0 25px", cursor: "pointer" }}>
-            {post.comments.length} Comments
-          </h6>:null
-        }
+          {post.stopcomment === false ? (
+            <h6 style={{ padding: "0 25px", cursor: "pointer" }}>
+              {post.comments.length} Comments
+            </h6>
+          ) : null}
         </div>
       </div>
       {isShare && <ShareModal url={`https://kidsin.org/post/${post._id}`} />}

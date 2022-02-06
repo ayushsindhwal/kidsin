@@ -35,8 +35,8 @@ export const imageUpload = async (images,auth) => {
 
       },
     })
-    console.log(res)
-    console.log('hello',res.data.secure_url)
+    
+    
     imgArr.push({url: res.data.secure_url });
   }
   return imgArr;

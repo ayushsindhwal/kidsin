@@ -13,27 +13,30 @@ export const POST_TYPE = {
   GET_POSTS: "GET_POSTS",
   UPDATE_POST: "UPDATE_POST",
   DELETE_POST: "DELETE_POST",
-  GET_POST: 'GET_POST',
+  GET_POST: "GET_POST",
+  UPDATE_PROFILE_POST: "UPDATE_PROFILE_POST",
+  DELETE_PROFILE_POST: "DELETE_PROFILE_POST",
 
 };
 
 export const createPost =
-  ({ content, images, auth, socket }) =>async (dispatch) => {
+  ({ content, images, auth, socket }) =>
+  async (dispatch) => {
     let media = [];
-    console.log(content)
+
     try {
       dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
-      if (images.length > 0) media = await imageUpload(images,auth);
-      console.log('the problem hellp',content)
+      if (images.length > 0) media = await imageUpload(images, auth);
+
       const res = await postDataAPI(
         "posts",
         { content, images: media },
         auth.token
       );
-      console.log("res dataata",res.data) 
+
       dispatch({
         type: POST_TYPE.CREATE_POST,
-        payload: { ...res.data.newPost},
+        payload: { ...res.data.newPost },
       });
       dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: false } });
 
@@ -75,36 +78,38 @@ export const getPosts = (token) => async (dispatch) => {
   }
 };
 
-
-
-
-
-export const getPost = ({detailPost, id, auth}) => async (dispatch) => {
-  if(detailPost.every(post => post._id !== id)){
+export const getPost =
+  ({ detailPost, id, auth }) =>
+  async (dispatch) => {
+    if (detailPost.every((post) => post._id !== id)) {
       try {
-          const res = await getDataAPI(`post/${id}`, auth.token)
-          dispatch({ type: POST_TYPE.GET_POST, payload: res.data.post })
+        const res = await getDataAPI(`post/${id}`, auth.token);
+        dispatch({ type: POST_TYPE.GET_POST, payload: res.data.post });
       } catch (err) {
-          dispatch({
-              type: GLOBALTYPES.ALERT,
-              payload: {error: err.response.data.msg}
-          })
+        dispatch({
+          type: GLOBALTYPES.ALERT,
+          payload: { error: err.response.data.msg },
+        });
       }
-  }
-}
+    }
+  };
 
 export const likePost =
-  ({ post, auth, socket }) =>
+  ({ post, auth, socket,page }) =>
   async (dispatch) => {
     const newPost = { ...post, likes: [...post.likes, auth.user] };
 
-    dispatch({ type: POST_TYPE.UPDATE_POST, payload: newPost });
+    if (page === "profile") {
+      dispatch({ type: POST_TYPE.UPDATE_PROFILE_POST, payload: newPost });
+    } else {
+      dispatch({ type: POST_TYPE.UPDATE_POST, payload: newPost });
+    }
     socket.emit("likePost", newPost);
 
     try {
       await patchDataAPI(`post/${post._id}/like`, null, auth.token);
       //notify
-      console.log(post._id)
+
       const msg = {
         id: auth.user._id,
         text: "liked your Post",
@@ -124,13 +129,21 @@ export const likePost =
   };
 
 export const unlikePost =
-  ({ post, auth, socket }) =>
+  ({ post, auth, socket, page }) =>
   async (dispatch) => {
-    const newPost = {
+    const newPost = !page?{
+      ...post,
+      likes: post.likes.filter((like) => like._id !== auth.user._id),
+    }:{
       ...post,
       likes: post.likes.filter((like) => like._id !== auth.user._id),
     };
-    dispatch({ type: POST_TYPE.UPDATE_POST, payload: newPost });
+    if (page === "profile") {
+
+      dispatch({ type: POST_TYPE.DELETE_PROFILE_POST, payload: newPost });
+    } else {
+      dispatch({ type: POST_TYPE.UPDATE_POST, payload: newPost });
+    }
     socket.emit("unLikePost", newPost);
 
     try {
@@ -166,7 +179,7 @@ export const updatePost =
 
     try {
       dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
-      if (images.length > 0) media = await imageUpload(imgNewUrl,auth);
+      if (images.length > 0) media = await imageUpload(imgNewUrl, auth);
       //
       const res = await patchDataAPI(
         `post/${status._id}`,

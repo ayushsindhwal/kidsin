@@ -32,7 +32,7 @@ userDetails:async(req,res,next)=>{
      try{   
         const id=!req.params.id?req.user._id:req.params.id
         const user=await User.findById(id).populate({path:'courses events followers following courses.participants', populate:{path:'participants'}})
-        console.log(user)
+        
         const education=await UserEducation.find({user:id})
         const skill=await UserSkills.find({user:id}).populate('endrosedBy')
         const certification=await UserCertification.find({user:id})
@@ -85,8 +85,8 @@ userDetails:async(req,res,next)=>{
     }})
      }
         catch (err) {
-            console.log("here is the world")
-            console.log(err)
+            
+            
             return res.status(500).json({msg:err.message})
         }
         },
@@ -138,7 +138,7 @@ getUser:async(req,res,next)=>{
             //  const allConnection=connections.filter(allFriends)
             let requestpending=[];
             request.filter(user=>requestpending.push(String(user.from)))
-            console.log("asdasdsa",requestpending)
+            
             const realconnections=user.followers
             const allconnections={request,realconnections}
             let statusBetween;
@@ -239,7 +239,7 @@ addEducation:async(req,res)=>{
 // const schooLogo=await Profile.find({$or:[{profile:req.body.school+'.png'},{profile:req.body.school+'.jpg'}]})
 // 
 const profile=await SchoolData.find({schoolname:req.body.school})
-console.log(profile[0].profile)
+
   const user=await UserEducation.create({
   school:req.body.school,
   profile:profile[0].profile,
@@ -262,7 +262,7 @@ console.log(profile[0].profile)
 updateEducation:async(req,res)=>{
     try {
         const profile=await SchoolData.find({schoolname:req.body.school})
-    console.log(profile[0].profile)
+    
         const user=await UserEducation.findByIdAndUpdate({_id:req.body.id},{
             school:req.body.school,
             profile:profile[0].profile,
@@ -530,7 +530,7 @@ addEvent:async(req,res)=>{
                 })
 
   const newEvent=await Event.find({user:req.user._id})
-  console.log(newEvent)
+  
 res.json({msg:"event created successfully",data:newEvent})
     
             
@@ -556,7 +556,7 @@ const {file,title,desc,event_date,event_start_time,event_end_time}=req.body
             })
 
   const newEvent=await Event.find({user:req.user._id})
-  console.log(newEvent)
+  
 
             res.json({msg:"event updated successfully",data:newEvent})
     
@@ -572,7 +572,7 @@ const {file,title,desc,event_date,event_start_time,event_end_time}=req.body
 deleteEvent:async(req,res)=>{
         try {
             const user=await Event.deleteOne({_id:req.headers.id})
-            console.log(user)
+            
             const newEvent=await Event.find({user:req.user._id})
             res.json({msg:"event deleted successfully",data:newEvent})
     
@@ -715,7 +715,7 @@ try {
 },
 deleteInterest:async(req,res)=>{
     try{
-        console.log(req.body)
+        
        const deleteInterest=await User.findByIdAndUpdate(req.user._id,{
         $pull:{interest:req.body.interestId}
     })
@@ -860,9 +860,9 @@ joinevent:async(req,res)=>{
 changePassword:async(req,res)=>{
 try {
 
-    console.log(req.body.oldpassword,req.user.password)
+    
     const isMatch=await bcrypt.compare(req.body.oldpassword,req.user.password)
-    console.log(isMatch)
+    
     if(!isMatch) return res.json({msg:"Current Password is incorrect"})
     const passwordHash=await bcrypt.hash(req.body.password,12)
     const userupdate=await User.findByIdAndUpdate(req.user._id,{
@@ -871,12 +871,12 @@ try {
     return res.json({msg:"Password updated"})
 
 } catch (err) {
-    console.log(err)
+    
 }
 },
 
 deleteFriend:async(req,res)=>{
-    console.log(req.headers.id)
+    
     try {
         const connection=await Connections.findOneAndDelete({$or:[{$and:[{to:req.user._id},{from:req.headers.id}]},{$and:[{to:req.headers.id},{from:req.user._id}]}]})
         await User.findOneAndUpdate({_id:req.headers.id},{
@@ -903,10 +903,10 @@ deleteFriend:async(req,res)=>{
 },
 
 razorpay:async(req,res)=>{
-    console.log("we are going to paay")
+    
     if(req.user.role==='student') return res.json({msg:"you are not authorized"})
     const plan=await Plans.findById(req.params.id)
-    console.log(plan)
+    
     var instance = new Razorpay({
         key_id:process.env.KEY_ID,
         key_secret:process.env.KEY_SECRET,
@@ -921,7 +921,7 @@ razorpay:async(req,res)=>{
         payment_capture, 
         }
     const response=await instance.orders.create(options)
-    console.log(response)
+    
     res.json({
         id:response.id,
         currency:response.currency,
@@ -940,7 +940,7 @@ razorpay:async(req,res)=>{
 razoryverify:async(req,res)=>{
     //do a validation
     const Secret=process.env.WEBHOOK_RAZOR
-    console.log("jellsldlsdlsldlaldasd",req.body)
+    
 
 	const crypto = require('crypto')
 
@@ -948,17 +948,17 @@ razoryverify:async(req,res)=>{
 	shasum.update(JSON.stringify(req.body))
 	const digest = shasum.digest('hex')
 
-	console.log(digest, req.headers['x-razorpay-signature'])
-    console.log(digest, req.headers['x-razorpay-signature'])
+	
+    
 
 	if (digest === req.headers['x-razorpay-signature']) {
-		console.log('request is legit')
+		
         const ids=req.body.payload.payment.entity
-        console.log(ids)
+        
         const plans=await Plans.findByIdAndUpdate(ids.notes.planid,{$push:{purchasedBy:ids.notes.userid}},{new:true})
         const expirytime= await Plans.findById(ids.notes.planid)
         const expiry='5m'
-        console.log("expirty sjadkjaskjdkasjkdjkasdkjasjdjkas",expirytime)
+        
         const hello =await purchased.create({
             plan:ids.notes.planid,
             purchasedBy:ids.notes.userid,
@@ -967,14 +967,14 @@ razoryverify:async(req,res)=>{
 
         })
 
-        console.log(hello)
+        
 
         require('fs').writeFileSync('payment1.json', JSON.stringify(req.body, null, 4))
 
 		// process it
 	} else {
 		// pass it
-        console.log("not a legit request")
+        
 	}
 	res.json({ status: 'ok' })
 },
@@ -985,15 +985,15 @@ getAllMessage:async(req,res)=>{
 },
 
 profileVerify:async(req,res)=>{
-    console.log("here")
+    
     const verify=await verification.create({profile:req.user._id})
-    console.log(verify)
+    
     res.json({msg:"verification request sent"})
 },
 hideprofile:async(req,res)=>{
-    console.log(req.body)
+    
     const verify=await User.findByIdAndUpdate(req.user._id,{hideprofile:req.body.hideprofile})
-    console.log(verify)
+    
     if(req.body.hideprofile===true)
     {
         res.json({msg:"profile hidden "})
@@ -1010,44 +1010,44 @@ getreciept:async(req,res)=>{
 },
 mediaupload:async(req,res)=>{
     const files=req.files
-    console.log("new file",files)
+    
     const milliseconds=new Date()
     const mediaPath='/uploads/'+milliseconds.getTime()+files.file.name
     files.file.mv('./public'+mediaPath, err => {
         if (err) {
-          console.log("here")
+          
           console.error(err);
           return res.status(500).send(err);
         }
         res.json({ message: "Successfully uploaded files",secure_url:mediaPath});
 
       });
-    console.log(req.body);
-    console.log(req.files);
+    
+    
 },
 createpage:async(req,res)=>{
-    console.log(req.body)
+    
         const page=await Createpage.create({...req.body,createdBy:req.user._id})
         res.json(page)
     },
 editpage:async(req,res)=>{
-        console.log(req.body)
+        
             const page=await Createpage.findByIdAndUpdate(req.body._id,{...req.body})
             const editedpage=await Createpage.find({createdBy:req.user._id})
             res.json(editedpage)
         },
 deletepage:async(req,res)=>{
-            console.log(req.body)
+            
                 const page=await Createpage.findByIdAndDelete(req.params.id)
                 res.json({msg:"page deleted successfully",id:req.params.id})
             },
 
 getpage:async(req,res)=>{
-    console.log(req.params.id)
+    
     // getting posts
     const pagedetail=await Createpage.findById(req.params.id)
     const post=await Posts.find({user:req.params.id})
-    console.log(pagedetail,post)
+    
 
     res.json({pagedetail,post})
     

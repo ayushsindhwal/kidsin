@@ -4,7 +4,7 @@ import { GLOBALTYPES } from "../../redux/actions/globalTypes";
 
 const Certificate = ({ data, st }) => {
   const dispatch = useDispatch()
-  console.log(data)
+  
   return (
     <div style={{ display: `${st}` }}>
       <div className="inn-ctn-box mt-4 mb-5">

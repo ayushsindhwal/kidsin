@@ -4,7 +4,7 @@ import { GLOBALTYPES } from "../../redux/actions/globalTypes";
 const Status = ({pageid,role}) => {
   const { auth } = useSelector((state) => state);
   const dispatch = useDispatch();
-  console.log('this is the role of the particular',pageid)
+  
 
   const postonly=()=>{
     dispatch({ type: GLOBALTYPES.STATUS, payload: true });

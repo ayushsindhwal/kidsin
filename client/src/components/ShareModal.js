@@ -12,7 +12,7 @@ import {
   LinkedinIcon,
 } from "react-share";
 const ShareModal = ({ url }) => {
-  console.log(url)
+  
   return (
     <div className="d-flex justify-content-between px-4 py-2 bg-light">
       <FacebookShareButton url={url}>

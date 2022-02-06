@@ -14,7 +14,7 @@ const SocketServer=(socket)=>{
     socket.on('likePost',newPost=>{
         const ids=[...newPost.user.followers,newPost.user._id]
         const clients=users.filter(user=>{
-            console.log("whajsdkjkasjd",user.id)
+            
 
             ids.includes(user.id)
         })

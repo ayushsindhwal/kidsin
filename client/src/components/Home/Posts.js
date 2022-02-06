@@ -15,7 +15,7 @@ useEffect(() => {
   return (
     <div style={{ display: `${st}` }} className="schoolpublicpost">
       {(posted != undefined ? posted : Homeposts.posts).map((post) => (
-        <PostCard key={post._id} post={post} />
+        <PostCard  key={post._id} post={post} page={posted!=undefined?'profile':'home'}/>
       ))}
     </div>
   );

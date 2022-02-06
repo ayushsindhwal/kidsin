@@ -11,27 +11,25 @@ import StatusModal from "../../components/StatusModal";
 
 const SchoolProfile = () => {
   const { id } = useParams();
-  const { auth } = useSelector((state) => state);
+  const { auth, profile } = useSelector((state) => state);
   const dispatch = useDispatch();
   const [userData, setUserData] = useState([]);
   const [Followers, setFollowers] = useState("none");
   const [Home, setHome] = useState("block");
- 
+
   const [fulldata, setFulldata] = useState({});
   const [get, setGet] = useState(false);
 
   useEffect(() => {
-      getDetails()
+    getDetails();
     return () => {};
   }, []);
 
-  const getDetails=async()=>{
-      const res=await getDataAPI(`page/${id}`,auth.token)
-      setUserData([res.data.pagedetail])
-      setFulldata(res.data)
-    
-
-  }
+  const getDetails = async () => {
+    const res = await getDataAPI(`page/${id}`, auth.token);
+    setUserData([res.data.pagedetail]);
+    setFulldata(res.data);
+  };
 
   return (
     <div>
@@ -59,8 +57,6 @@ const SchoolProfile = () => {
                       onClick={() => {
                         setFollowers("none");
                         setHome("block");
-                    
-                       ;
                       }}
                       className="nav-link"
                     >
@@ -76,15 +72,12 @@ const SchoolProfile = () => {
                       onClick={() => {
                         setFollowers("block");
                         setHome("none");
-                       
                       }}
                       className="nav-link"
                     >
                       About
                     </a>
                   </li>
-           
-                      
                 </ul>
               </div>
             </nav>
@@ -97,14 +90,22 @@ const SchoolProfile = () => {
           <div className="school-banner mt-4" style={{}}>
             <div className="media">
               <img
-         src={user.image}
-
+                src={user.image}
                 className="mr-4"
                 alt="..."
                 style={{ width: "200px", height: "200px", borderRadius: "50%" }}
               />
               <div className="media-body">
-                <h5 className="mt-0">{auth.user.verified?<><img src="images/verified.png" alt=""  />{user.fullname}</>:user.fullname}</h5>
+                <h5 className="mt-0">
+                  {auth.user.verified ? (
+                    <>
+                      <img src="images/verified.png" alt="" />
+                      {user.fullname}
+                    </>
+                  ) : (
+                    user.fullname
+                  )}
+                </h5>
                 <p>{user.address}</p>
                 <p>
                   <a href="">
@@ -113,12 +114,14 @@ const SchoolProfile = () => {
                     </i>
                   </a>
                 </p>
-                {user.createdBy === auth.user._id ? null : <Followbtn user={user} />}
+                {user.createdBy === auth.user._id ? null : (
+                  <Followbtn user={user} />
+                )}
               </div>
             </div>
           </div>
-          {user.createdBy === auth.user._id ?<Status pageid={user}/>:null}
-          <Posts st={Home} posted={fulldata.post} />
+          {user.createdBy === auth.user._id ? <Status pageid={user} /> : null}
+          <Posts st={Home} posted={profile?.details?.post} />
           <About st={Followers} about={user.about} />
         </div>
       ))}

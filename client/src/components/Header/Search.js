@@ -38,7 +38,7 @@ const Search = ({ match }) => {
           input={Search}
         />
         <div style={{width:'30px',height:'33px',margin:'1px',padding:'5px'}} type="button" className="btn-primary">
-        <i class="fa fa-search" aria-hidden="true"></i>
+        <i className="fa fa-search" aria-hidden="true"></i>
         </div>
       </div>
     </>

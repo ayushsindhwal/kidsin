@@ -29,7 +29,7 @@ export const getNotifies = (token, socket) => async (dispatch) => {
 export const createNotify =({ msg, auth, socket }) =>async (dispatch) => {
     try {
       const res = await postDataAPI("notify", msg, auth.token);
-      console.log(res)
+      
       socket.emit("createNotify", {
         ...res.data.notify,
         user: {

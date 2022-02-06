@@ -10,7 +10,7 @@ const NotifyModal = () => {
 
   const handleIsRead = (e, msg) => {
     e.preventDefault();
-    console.log(msg, "asdasd");
+    
   };
   return (
     <div>
@@ -44,7 +44,7 @@ const NotifyModal = () => {
         {notify.data.map((msg, index) => (
 
           <div key={index} className="px-2 mb-3">
-            {                  console.log(msg.url)
+            {                  
 }
             <Link
               onClick={() => dispatch(removeNotify({ msg, auth }))}

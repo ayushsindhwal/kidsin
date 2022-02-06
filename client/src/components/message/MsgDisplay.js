@@ -1,9 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Message from "../../pages/message";
 
 const MsgDisplay = ({ user, msg, theme }) => {
   return (
     <>
+      <Link to={`/profile/${user._id}`}>
       <div className="chat_title">
         <img
           src={user.avatar}
@@ -11,7 +13,8 @@ const MsgDisplay = ({ user, msg, theme }) => {
         />
         <span>{user.fullname}</span>
       </div>
-      {msg.text && <div className="chat_text">{msg.text}</div>}
+      </Link>
+      {msg.text && <div className="chat_text" style={{width:'10vw',wordBreak:'break-word'}}>{msg.text}</div>}
       <div className="chat_time">
         {new Date(msg.createdAt).toLocaleString()}
       </div>

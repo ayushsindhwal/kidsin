@@ -6,11 +6,11 @@ import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
 const Component = () => 
 {
     const [value, setValue] = useState(null);
-    console.log(value)
+    
 // geocodeByAddress(value.label)
 // .then(results => getLatLng(results[0]))
 // .then(({ lat, lng }) =>
-//   console.log('Successfully got latitude and longitude', { lat, lng })
+//   
 // );
     
     return(

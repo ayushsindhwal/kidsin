@@ -33,7 +33,6 @@ const Settings = () => {
     },
     validate,
     onSubmit: (values) => {
-      console.log(values);
       dispatch(resetLoginPassword({password: values.password, oldpassword: values.oldpassword,auth})
       );
     },
@@ -49,13 +48,11 @@ const verification=async()=>{
 const res=await postDataAPI('/verifyprofile',{verify:"profile"},auth.token)
 dispatch({ type: GLOBALTYPES.ALERT, payload: { success: res.data.msg } });
 
-console.log(res)
 }
 
 const sendsettings=async(values)=>{
   const res=await postDataAPI('/hideprofile',values,auth.token)
   dispatch({ type: GLOBALTYPES.ALERT, payload: { success: res.data.msg } });
-  console.log(res)
 }
 
   return (
@@ -139,9 +136,7 @@ const sendsettings=async(values)=>{
 
 {({ values }) => (
         <Form>
-          {console.log(values)}
           <div role="group" aria-labelledby="my-radio-group">
-            {console.log(values)}
             <h3>your profile is {auth.user.hideprofile===true?'Hidden':'Unhidden'}</h3>
             <h3>Hide profile</h3>
             <label>

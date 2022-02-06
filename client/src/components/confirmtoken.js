@@ -20,7 +20,7 @@ const Token = () => {
   const history=useHistory()
 
     const {id}=useParams()
-    console.log(id)
+    
   // Pass the useFormik() hook initial form values and a submit function that will
   // be called when the form is submitted
 
@@ -53,7 +53,7 @@ let B;
     const check=await axios.put(`/api/confirmtoken/${id}`,{id})
     if(check.status==200)
     {
-      console.log(check.status)
+      
       setVerify(true)
       // history.push('/login')
     }
